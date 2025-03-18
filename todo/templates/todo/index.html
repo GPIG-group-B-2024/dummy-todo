@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}To-Do List{% endblock %}</h1>
+    <a class="action" href="{{ url_for('todo.create') }}">New Task</a>
+{% endblock %}
+
+{% block content %}
+    {% for task in tasks %}
+        <article class="task">
+            <header>
+                <div>
+                    <h1>{{ task['title'] }}</h1>
+                    <div class="about">Created on {{ task['created'].strftime('%Y-%m-%d') }}</div>
+                </div>
+                <a class="action" href="{{ url_for('todo.update', id=task['id']) }}">Edit</a>
+            </header>
+            <p class="description">{{ task['description'] }}</p>
+            <p class="status">{{ 'Completed' if task['completed'] else 'Pending' }}</p>
+        </article>
+        {% if not loop.last %}
+            <hr>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
