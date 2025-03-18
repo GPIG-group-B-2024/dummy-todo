@@ -10,8 +10,6 @@ bp = Blueprint('todo', __name__)
 
 @bp.route('/')
 def index():
-    if g.user is None:
-        return redirect(url_for('auth.login'))  # Redirect to login if not logged in
     
     db = get_db()
     tasks = db.execute(

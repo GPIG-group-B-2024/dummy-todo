@@ -1,0 +1,5 @@
+Metadata-Version: 2.2
+Name: todo
+Version: 1.0.0
+Requires-Dist: Flask
+Dynamic: requires-dist
