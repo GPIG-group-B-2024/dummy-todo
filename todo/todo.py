@@ -21,6 +21,19 @@ def index():
     ).fetchall()
     return render_template('todo/index.html', tasks=tasks)
 
+@bp.route('/remaining')
+@login_required
+def remaining():
+    db = get_db()
+    incomplete_tasks = db.execute(
+        'SELECT t.id, title, description, created, completed'
+        ' FROM task t JOIN user u ON t.user_id = u.id'
+        ' WHERE t.user_id = ? AND t.completed = 0'
+        ' ORDER BY created DESC',
+        (g.user['id'],)
+    ).fetchall()
+    return render_template('todo/index.html', tasks=incomplete_tasks)
+
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():
