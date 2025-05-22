@@ -1,5 +1,5 @@
 import sqlite3
-from datetime import datetime
+from datetime import datetime, date
 
 import click
 from flask import current_app, g
@@ -35,10 +35,14 @@ def init_db_command():
     init_db()
     click.echo('Initialized the database.')
 
+# Support for DATETIME and DATE columns
+def parse_timestamp(val):
+    return datetime.fromisoformat(val.decode())
+def parse_date(val):
+    return date.fromisoformat(val.decode())
 
-sqlite3.register_converter(
-    "timestamp", lambda v: datetime.fromisoformat(v.decode())
-)
+sqlite3.register_converter("timestamp", parse_timestamp)
+sqlite3.register_converter("date", parse_date)
 
 def init_app(app):
     app.teardown_appcontext(close_db)

@@ -11,5 +11,6 @@ CREATE TABLE task (
     description TEXT,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     completed BOOLEAN NOT NULL DEFAULT 0,
+    due_date DATE,
     FOREIGN KEY (user_id) REFERENCES user (id)
 );

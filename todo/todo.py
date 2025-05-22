@@ -10,10 +10,9 @@ bp = Blueprint('todo', __name__)
 
 @bp.route('/')
 def index():
-    
     db = get_db()
     tasks = db.execute(
-        'SELECT t.id, title, description, created, completed'
+        'SELECT t.id, title, description, created, completed, due_date'
         ' FROM task t JOIN user u ON t.user_id = u.id'
         ' WHERE t.user_id = ?'
         ' ORDER BY created DESC',
@@ -30,6 +29,7 @@ def create():
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
+        due_date = request.form.get('due_date') or None
         error = None
 
         if not title:
@@ -40,9 +40,9 @@ def create():
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO task (title, description, user_id)'
-                ' VALUES (?, ?, ?)',
-                (title, description, g.user['id'])
+                'INSERT INTO task (title, description, user_id, due_date)'
+                ' VALUES (?, ?, ?, ?)',
+                (title, description, g.user['id'], due_date)
             )
             db.commit()
             return redirect(url_for('todo.index'))
@@ -51,7 +51,7 @@ def create():
 
 def get_task(id, check_user=True):
     task = get_db().execute(
-        'SELECT t.id, title, description, created, completed, user_id'
+        'SELECT t.id, title, description, created, completed, due_date, user_id'
         ' FROM task t JOIN user u ON t.user_id = u.id'
         ' WHERE t.id = ?',
         (id,)
@@ -74,6 +74,7 @@ def update(id):
         title = request.form['title']
         description = request.form['description']
         completed = True if request.form.get('completed') == 'on' else False
+        due_date = request.form.get('due_date') or None
         error = None
 
         if not title:
@@ -84,9 +85,9 @@ def update(id):
         else:
             db = get_db()
             db.execute(
-                'UPDATE task SET title = ?, description = ?, completed = ?'
+                'UPDATE task SET title = ?, description = ?, completed = ?, due_date = ?'
                 ' WHERE id = ?',
-                (title, description, completed, id)
+                (title, description, completed, due_date, id)
             )
             db.commit()
             return redirect(url_for('todo.index'))
