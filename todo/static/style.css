@@ -24,3 +24,17 @@ nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
 .content textarea { min-height: 12em; resize: vertical; }
 input.danger { color: #cc2f2e; }
 input[type=submit] { align-self: start; min-width: 10em; }
+
+/* Priority badges */
+.priority-badge { 
+    display: inline-block;
+    padding: 2px 8px;
+    margin-left: 8px;
+    font-size: 0.85em;
+    border-radius: 12px;
+    font-weight: bold;
+    color: #fff;
+}
+.priority-critical { background: #cc2f2e; }
+.priority-normal { background: #377ba8; }
+.priority-least-priority { background: #999; }

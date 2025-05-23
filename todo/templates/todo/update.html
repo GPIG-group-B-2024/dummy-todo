@@ -12,6 +12,12 @@
         <textarea name="description" id="description">{{ task['description'] }}</textarea>
         <label for="completed">Completed</label>
         <input type="checkbox" name="completed" id="completed" {{ 'checked' if task['completed'] }}>
+        <label for="priority">Priority</label>
+        <select name="priority" id="priority">
+            <option value="critical" {% if task['priority']=='critical' %}selected{% endif %}>Critical</option>
+            <option value="normal" {% if task['priority']=='normal' %}selected{% endif %}>Normal</option>
+            <option value="least priority" {% if task['priority']=='least priority' %}selected{% endif %}>Least priority</option>
+        </select>
         <input type="submit" value="Save">
     </form>
     <hr>
