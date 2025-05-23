@@ -10,6 +10,12 @@
         <input name="title" id="title" required>
         <label for="description">Description</label>
         <textarea name="description" id="description"></textarea>
+        <label for="priority">Priority</label>
+        <select name="priority" id="priority">
+            <option value="critical">Critical</option>
+            <option value="normal" selected>Normal</option>
+            <option value="least priority">Least priority</option>
+        </select>
         <input type="submit" value="Save">
     </form>
 {% endblock %}
