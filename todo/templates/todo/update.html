@@ -10,6 +10,12 @@
         <input name="title" id="title" value="{{ task['title'] }}" required>
         <label for="description">Description</label>
         <textarea name="description" id="description">{{ task['description'] }}</textarea>
+        <label for="priority">Priority</label>
+        <select name="priority" id="priority">
+            <option value="low" {% if task['priority']=='low' %}selected{% endif %}>Low</option>
+            <option value="medium" {% if task['priority']=='medium' %}selected{% endif %}>Medium</option>
+            <option value="high" {% if task['priority']=='high' %}selected{% endif %}>High</option>
+        </select>
         <label for="completed">Completed</label>
         <input type="checkbox" name="completed" id="completed" {{ 'checked' if task['completed'] }}>
         <input type="submit" value="Save">
