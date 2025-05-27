@@ -13,7 +13,7 @@ def index():
     
     db = get_db()
     tasks = db.execute(
-        'SELECT t.id, title, description, created, completed'
+        'SELECT t.id, title, description, created, completed, priority'
         ' FROM task t JOIN user u ON t.user_id = u.id'
         ' WHERE t.user_id = ?'
         ' ORDER BY created DESC',
@@ -30,19 +30,23 @@ def create():
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
+        priority = request.form.get('priority', 'normal')
         error = None
 
         if not title:
             error = 'Title is required.'
+
+        if priority not in ('critical', 'normal', 'least priority'):
+            error = 'Invalid priority value.'
 
         if error is not None:
             flash(error)
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO task (title, description, user_id)'
-                ' VALUES (?, ?, ?)',
-                (title, description, g.user['id'])
+                'INSERT INTO task (title, description, user_id, priority)'
+                ' VALUES (?, ?, ?, ?)',
+                (title, description, g.user['id'], priority)
             )
             db.commit()
             return redirect(url_for('todo.index'))
@@ -51,7 +55,7 @@ def create():
 
 def get_task(id, check_user=True):
     task = get_db().execute(
-        'SELECT t.id, title, description, created, completed, user_id'
+        'SELECT t.id, title, description, created, completed, user_id, priority'
         ' FROM task t JOIN user u ON t.user_id = u.id'
         ' WHERE t.id = ?',
         (id,)
@@ -74,19 +78,22 @@ def update(id):
         title = request.form['title']
         description = request.form['description']
         completed = True if request.form.get('completed') == 'on' else False
+        priority = request.form.get('priority', 'normal')
         error = None
 
         if not title:
             error = 'Title is required.'
+        if priority not in ('critical', 'normal', 'least priority'):
+            error = 'Invalid priority value.'
 
         if error is not None:
             flash(error)
         else:
             db = get_db()
             db.execute(
-                'UPDATE task SET title = ?, description = ?, completed = ?'
+                'UPDATE task SET title = ?, description = ?, completed = ?, priority = ?'
                 ' WHERE id = ?',
-                (title, description, completed, id)
+                (title, description, completed, priority, id)
             )
             db.commit()
             return redirect(url_for('todo.index'))

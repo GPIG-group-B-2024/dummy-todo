@@ -24,3 +24,7 @@ nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
 .content textarea { min-height: 12em; resize: vertical; }
 input.danger { color: #cc2f2e; }
 input[type=submit] { align-self: start; min-width: 10em; }
+.badge { display: inline-block; padding: 0.15em 0.6em; margin-left: 0.5em; font-size: 0.7em; border-radius: 0.7em; font-weight: bold; letter-spacing: 0.05em; vertical-align: middle; }
+.badge-critical { background: #e53935; color: white; }
+.badge-normal { background: #bdbdbd; color: #212121; }
+.badge-least { background: #43a047; color: white; }
